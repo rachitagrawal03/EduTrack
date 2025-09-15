@@ -18,6 +18,8 @@ interface MarksEntryFormProps {
 }
 
 const MarksEntryForm: React.FC<MarksEntryFormProps> = ({ teacher, onLogout }) => {
+  const [isDashboardVisible, setIsDashboardVisible] = React.useState(false);
+
   const {
     examDetails,
     handleDetailChange,
@@ -71,6 +73,12 @@ const MarksEntryForm: React.FC<MarksEntryFormProps> = ({ teacher, onLogout }) =>
 
   const isSubmitting = submissionState === 'submitting';
 
+  const handleToggleDashboard = () => {
+    if (teacher.dashboardLink) {
+      setIsDashboardVisible(prev => !prev);
+    }
+  };
+
   return (
     <>
       <SubmittingModal show={isSubmitting} />
@@ -81,61 +89,78 @@ const MarksEntryForm: React.FC<MarksEntryFormProps> = ({ teacher, onLogout }) =>
       />
       <div className="min-h-screen bg-slate-100 p-4 sm:p-6 lg:p-8">
         <div className="max-w-7xl mx-auto">
-          <Header teacherName={teacher.name} onLogout={onLogout} />
+          <Header
+            teacherName={teacher.name}
+            onLogout={onLogout}
+            dashboardLink={teacher.dashboardLink}
+            isDashboardVisible={isDashboardVisible}
+            onToggleDashboard={handleToggleDashboard}
+          />
           <main>
-            <form onSubmit={handleSubmit}>
-              <fieldset disabled={isSubmitting}>
-                {/* A single, unified card for the entire form */}
-                <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
-                    {/* Exam Details Section */}
-                    <div className="p-6 sm:p-8">
-                        <h2 className="text-xl font-bold text-slate-800">Exam Details</h2>
-                        <div className="border-t border-slate-200 mt-3 mb-6"></div>
-                        <ExamDetailsForm
-                            examDetails={examDetails}
-                            onDetailChange={handleDetailChange}
-                            disabled={isSubmitting}
-                            availableClasses={availableClasses}
-                            availableSections={availableSections}
-                            availableSubjects={availableSubjects}
-                        />
-                    </div>
+            {isDashboardVisible && teacher.dashboardLink ? (
+              <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+                <iframe
+                  src={teacher.dashboardLink}
+                  title="Dashboard"
+                  className="w-full h-[calc(100vh-160px)] border-0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit}>
+                <fieldset disabled={isSubmitting}>
+                  {/* A single, unified card for the entire form */}
+                  <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+                      {/* Exam Details Section */}
+                      <div className="p-6 sm:p-8">
+                          <h2 className="text-xl font-bold text-slate-800">Exam Details</h2>
+                          <div className="border-t border-slate-200 mt-3 mb-6"></div>
+                          <ExamDetailsForm
+                              examDetails={examDetails}
+                              onDetailChange={handleDetailChange}
+                              disabled={isSubmitting}
+                              availableClasses={availableClasses}
+                              availableSections={availableSections}
+                              availableSubjects={availableSubjects}
+                          />
+                      </div>
 
-                    {/* Divider */}
-                    <div className="border-t border-slate-200"></div>
+                      {/* Divider */}
+                      <div className="border-t border-slate-200"></div>
 
-                    {/* Student Marks Section */}
-                    <div className="p-6 sm:p-8">
-                        <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
-                            <h2 className="text-xl font-bold text-slate-800">Student Marks</h2>
-                            <p className="text-sm text-slate-500">
-                                {studentMarks.length > 0 ? `Total Students: ${studentMarks.length}` : 'No students to display.'}
-                            </p>
-                        </div>
-                        <div className="border-t border-slate-200 mt-3 mb-6"></div>
-                        <StudentTable
-                            students={filteredStudents}
-                            onMarksChange={handleMarksChange}
-                            onStatusChange={handleStatusChange}
-                            onRemarkChange={handleRemarkChange}
-                            validationErrors={validationErrors}
-                            filterQuery={filterQuery}
-                            onFilterChange={(e) => setFilterQuery(e.target.value)}
-                            isLoading={isLoadingStudents}
-                            isSubmitting={isSubmitting}
-                        />
-                    </div>
-                </div>
-                
-                <div className="mt-8">
-                    <FormActions
-                      submissionState={submissionState}
-                      errorMessage={errorMessage}
-                      canSubmit={areDetailsComplete && studentMarks.length > 0 && !hasValidationErrors}
-                    />
-                </div>
-              </fieldset>
-            </form>
+                      {/* Student Marks Section */}
+                      <div className="p-6 sm:p-8">
+                          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                              <h2 className="text-xl font-bold text-slate-800">Student Marks</h2>
+                              <p className="text-sm text-slate-500">
+                                  {studentMarks.length > 0 ? `Total Students: ${studentMarks.length}` : 'No students to display.'}
+                              </p>
+                          </div>
+                          <div className="border-t border-slate-200 mt-3 mb-6"></div>
+                          <StudentTable
+                              students={filteredStudents}
+                              onMarksChange={handleMarksChange}
+                              onStatusChange={handleStatusChange}
+                              onRemarkChange={handleRemarkChange}
+                              validationErrors={validationErrors}
+                              filterQuery={filterQuery}
+                              onFilterChange={(e) => setFilterQuery(e.target.value)}
+                              isLoading={isLoadingStudents}
+                              isSubmitting={isSubmitting}
+                          />
+                      </div>
+                  </div>
+                  
+                  <div className="mt-8">
+                      <FormActions
+                        submissionState={submissionState}
+                        errorMessage={errorMessage}
+                        canSubmit={areDetailsComplete && studentMarks.length > 0 && !hasValidationErrors}
+                      />
+                  </div>
+                </fieldset>
+              </form>
+            )}
           </main>
         </div>
       </div>

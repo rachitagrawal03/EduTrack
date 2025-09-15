@@ -9,6 +9,7 @@ export interface Teacher {
   id: string;
   name: string;
   assignments: Assignment[];
+  dashboardLink?: string; // Added to hold the role-specific dashboard URL
 }
 
 export interface Student {
