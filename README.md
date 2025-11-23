@@ -1,10 +1,10 @@
 # 🎓 EduTrack — Marks Management & Academic Performance Analytics Portal
 
+## 📊 Overview
+
 EduTrack is a complete marks management and analytics system designed for schools. It streamlines marks entry, minimizes human errors, and provides instant performance insights through real-time dashboards. Teachers get secure login access, automated forms, and a smooth submission experience, while school admins get powerful analytical reports.
 
 ---
-
-## 📊 Overview
 
 EduTrack enables teachers to:
 
