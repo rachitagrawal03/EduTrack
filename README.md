@@ -31,9 +31,6 @@ EduTrack enables teachers to:
 **Teacher Login Portal:**  
 https://rachit.short.gy/edutrack
 
-**GitHub Repository:**  
-https://github.com/rachitagrawal03/EduTrack
-
 ---
 
 ## 🖥️ Platform Screenshots
@@ -112,6 +109,7 @@ Looker Studio
 
 ## 📁 Project Structure
 
+```bash
 EduTrack/
 ├── components/                 # UI components (inputs, loaders, modals)
 ├── hooks/                      # Custom React hooks for logic reuse
@@ -133,7 +131,7 @@ EduTrack/
 ├── vite.config.ts              # Vite bundler configuration
 │
 └── README.md                   # Project documentation
-
+```
 
 ---
 
@@ -150,10 +148,11 @@ EduTrack/
 
 ### **For Teachers**
 1. Log in  
-2. Select Exam → Class → Section → Subject  
+2. Select Exam Date → Exam Type → Class → Section → Subject  
 3. Enter marks / toggle Absent  
 4. Submit  
-5. View success confirmation  
+5. View success confirmation
+6. View dashboard for student performance
 
 ### **For Admins**
 1. Open Google Sheet submissions  
