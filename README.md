@@ -1,164 +1,56 @@
-# 🎓 EduTrack — Marks Management & Academic Performance Analytics Portal
+# Teacher's Marks Portal - Deployment Guide
 
-EduTrack is a complete marks management and analytics system designed for schools. It streamlines marks entry, minimizes human errors, and provides instant performance insights through real-time dashboards. Teachers get secure login access, automated forms, and a smooth submission experience, while school admins get powerful analytical reports.
-
----
-
-## 📊 Overview
-
-EduTrack enables teachers to:
-
-- Log in securely  
-- Enter marks with automated validation  
-- Auto-fill max marks based on exam type  
-- Mark students present/absent  
-- Submit error-free data  
-- View real-time academic analytics  
-
-### **Key Highlights**
-- 🔐 Secure authentication via Google Apps Script  
-- 🏫 Auto-linked teacher access (class & section based on ID)  
-- 📝 Smart marks entry with real-time validation  
-- 🚫 Absent toggle with auto-handled marks  
-- ⚡ Loading animation + success popup  
-- 📊 Live Looker Studio dashboards synced with Google Sheets  
-- ⏳ 90% reduction in reporting time  
+This guide explains how to deploy the application, which consists of a React frontend and a Google Apps Script backend that uses your Google Sheet as a database.
 
 ---
 
-## 🚀 Live Demo
+## Step 1: Google Sheets Setup
 
-**EduTrack-Teacher Login Portal:**  
-https://rachit.short.gy/edutrack
+Before deploying the script, ensure your Google Sheet is set up correctly.
 
----
+1.  **`Teachers Info` Sheet**:
+    *   This sheet stores teacher credentials and their assignments.
+    *   **Crucially, it must not contain any merged cells.** Every row must be a complete record.
+    *   Required columns: `Teacher ID`, `Teacher Name`, `Class`, `Section`, `Subject`, `Password`.
+    *   For multiple sections or subjects for a single class in one row, use comma-separated values (e.g., `A, B`).
 
-## 🖥️ Platform Screenshots
+2.  **`Students Info` Sheet**:
+    *   This sheet contains the list of all students.
+    *   Required columns: `Class`, `Section`, `Student ID`, `Student Name`.
 
-### 🔐 Login Page  
-![Login Form](images/Login%20Form.png)
-
-### 🧾 Marks Entry Form — Empty State  
-![Marks Form Empty](images/Exam%20Marks%20Form.png)
-
-### 🧾 Marks Entry Form — After Selecting Class/Section  
-![Marks Form Step 1](images/Exam%20Marks%20Form-1.png)
-
-### 🧾 Marks Entry Form — Student List Loaded  
-![Marks Form Step 2](images/Exam%20Marks%20Form-2.png)
-
-### ✏️ Filled Marks Form — Ready for Submission  
-![Filled Marks](images/Exam%20Marks%20Filled%20Form.png)
-
-### ⏳ Submission Loader  
-![Form Submission](images/Form%20Submission.png)
-
-### ✅ Successful Marks Submission  
-![Success Message](images/Success%20Message%20-%20Marks%20Submission.png)
-
-### 📊 Academic Performance Dashboard  
-![Dashboard](images/Dashboard.png)
+3.  **`Marks` Sheet**:
+    *   This sheet will store the submitted marks. You can create it empty.
+    *   Required columns (in this order): `Timestamp`, `Exam Type`, `Class`, `Section`, `Student ID`, `Student Name`, and then a column for each subject (e.g., `English`, `Mathematics`).
 
 ---
 
-## 🎯 Core Modules
+## Step 2: Backend Deployment (`Code.gs`)
 
-### **1. Authentication & Access Control**
-- Secure teacher login  
-- Maps teachers to assigned classes/sections  
-- Prevents unauthorized access  
+The backend logic resides in the `Code.gs` file and acts as the API for your web app.
 
-### **2. Smart Marks Entry System**
-- Auto-filled max marks  
-- Real-time validation  
-- Present/Absent toggle  
-- Inline warnings  
-- Smooth UI & confetti success animation  
+**Action:**
 
-### **3. Backend Data Processing**
-- Google Sheets as structured database  
-- Stores timestamped, clean data  
-- Prevents duplicate entries  
-- Automatically updates dashboard source data  
-
-### **4. Real-Time Analytics Dashboard**
-Includes metrics like:
-- Total students, teachers, subjects  
-- Average marks, pass %, high performer %  
-- Subject-wise marks distribution  
-- Grade-wise performance trends  
-- Student-level results table  
+1.  Open your Google Sheet.
+2.  Go to **Extensions > Apps Script**.
+3.  If you see a default `Code.gs` file, delete its content.
+4.  Copy the **entire contents** from the `Code.gs` file provided in this project and paste it into your script editor.
+5.  Deploy the script as a Web App:
+    *   Click **Deploy > New deployment**.
+    *   Select Type: **Web app**.
+    *   For "Execute as," select **Me**.
+    *   For "Who has access," select **Anyone**.
+    *   Click **Deploy**.
+6.  **Important:** Copy the **Web app URL** provided after deployment. You will need it in the next step.
 
 ---
 
-## 🛠️ Tech Stack
+## Step 3: Frontend Configuration (`services/api.ts`)
 
-**Frontend:**  
-React.js (Vite), TypeScript, HTML, CSS
+Connect your frontend to your newly deployed backend.
 
-**Backend:**  
-Google Apps Script, Web APIs
+**Action:**
 
-**Database:**  
-Google Sheets
+1.  Open the `services/api.ts` file in your project.
+2.  Paste the **Web app URL** you copied from Google Apps Script into the `APPS_SCRIPT_URL` constant, replacing the placeholder.
 
-**Analytics:**  
-Looker Studio
-
----
-
-## 📁 Project Structure
-
-EduTrack/
-├── components/                 # UI components (inputs, loaders, modals)
-├── hooks/                      # Custom React hooks for logic reuse
-├── images/                     # Project screenshots used in README
-├── services/                   # Apps Script and API service handlers
-│
-├── App.tsx                     # Root React application
-├── index.tsx                   # Entry point for React
-├── index.html                  # Base HTML template for Vite
-│
-├── Code.gs                     # Main Google Apps Script backend (auth, submission)
-├── code.gs                     # Additional Apps Script utility logic
-│
-├── metadata.json               # Metadata for form configuration and exam settings
-├── types.ts                    # TypeScript interfaces and data models
-│
-├── package.json                # Dependencies and project scripts
-├── tsconfig.json               # TypeScript configuration
-├── vite.config.ts              # Vite bundler configuration
-│
-└── README.md                   # Project documentation
-
-
-
----
-
-## 📈 Impact
-
-- ⏳ 70% teacher workload reduction  
-- 🧮 100% error-free submissions  
-- 📊 90% faster academic reporting  
-- ⚡ Real-time insights for school admins  
-
----
-
-## 🔧 How to Use
-
-### **For Teachers**
-1. Log in  
-2. Select Exam → Class → Section → Subject  
-3. Enter marks / toggle Absent  
-4. Submit  
-5. View dashboard for student performance  
-
-### **For Admins**
-1. Open Google Sheet submissions  
-2. Access Looker Studio Dashboard  
-3. Filter by class, exam, teacher, subject  
-4. Export reports if needed  
-
----  
-
-
+Your application is now fully configured and ready.
