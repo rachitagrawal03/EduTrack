@@ -12,7 +12,7 @@ const Header: React.FC<HeaderProps> = ({ teacherName, onLogout, dashboardLink, i
   return (
     <header className="flex flex-col sm:flex-row justify-between items-center mb-6">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">Marks Entry Portal</h1>
+        <h1 className="text-3xl font-bold text-slate-900">EduTrack</h1>
         <p className="text-slate-600 mt-1">Welcome, <span className="font-semibold">{teacherName}</span></p>
       </div>
       <div className="mt-4 sm:mt-0 flex items-center space-x-4">
