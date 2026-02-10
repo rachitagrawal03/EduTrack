@@ -1,4 +1,6 @@
-import { useState } from 'react';
+
+// Added React import to provide the React namespace for Dispatch, SetStateAction, and FormEvent
+import React, { useState } from 'react';
 import type { Teacher, StudentMark, ExamDetails } from '../types';
 import { marksService } from '../services/marksService';
 

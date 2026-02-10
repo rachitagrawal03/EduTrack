@@ -80,7 +80,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, isLoading, error }) => {
           </button>
           <div className="text-xs text-center text-gray-500 pt-4 border-t border-gray-200">
             <p className="font-semibold">For Demo:</p>
-            <p>ID: <code className="bg-gray-200 text-gray-800 px-1 rounded">teacher01</code> / <code className="bg-gray-200 text-gray-800 px-1 rounded">teacher02</code> / <code className="bg-gray-200 text-gray-800 px-1 rounded">teacher03</code></p>
+            <p>ID: <code className="bg-gray-200 text-gray-800 px-1 rounded">001</code></p>
             <p>Pass: <code className="bg-gray-200 text-gray-800 px-1 rounded">password123</code></p>
           </div>
         </form>

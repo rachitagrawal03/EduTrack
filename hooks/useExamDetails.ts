@@ -1,4 +1,6 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+
+// Added React import to provide the React namespace for ChangeEvent
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import type { Teacher, Assignment, ExamDetails } from '../types';
 
 export const useExamDetails = (teacherAssignments: Assignment[]) => {
